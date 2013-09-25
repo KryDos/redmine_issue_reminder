@@ -1,11 +1,10 @@
 require 'redmine'
-require 'dispatcher'
 
 def patch_class(clazz, patch)
   clazz.send(:include, patch) unless clazz.include?(patch)
 end
 
-Dispatcher.to_prepare do
+ActionDispatch::Callbacks.to_prepare do
   require_dependency 'issue_reminder/patches/mailer_patch'
   patch_class Mailer, IssueReminder::Patches::MailerPatch
 end
